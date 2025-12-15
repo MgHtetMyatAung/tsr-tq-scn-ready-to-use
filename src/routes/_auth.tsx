@@ -1,3 +1,4 @@
+import SideBarProvider from "@/providers/side-bar-provider";
 import { useAuthStore } from "@/stores/use-auth-store";
 import {
   createFileRoute,
@@ -37,38 +38,40 @@ function AuthLayout() {
   };
 
   return (
-    <div className="p-2 h-full">
-      <h1>Authenticated Route</h1>
-      <p>This route's content is only visible to authenticated users.</p>
-      <ul className="py-2 flex gap-2">
-        <li>
-          <Link
-            to="/"
-            className="hover:underline data-[status='active']:font-semibold"
-          >
-            Dashboard
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/"
-            className="hover:underline data-[status='active']:font-semibold"
-          >
-            Invoices
-          </Link>
-        </li>
-        <li>
-          <button
-            type="button"
-            className="hover:underline"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </li>
-      </ul>
-      <hr />
-      <Outlet />
-    </div>
+    <SideBarProvider>
+      <div className="p-2 h-full">
+        <h1>Authenticated Route</h1>
+        <p>This route's content is only visible to authenticated users.</p>
+        <ul className="py-2 flex gap-2">
+          <li>
+            <Link
+              to="/"
+              className="hover:underline data-[status='active']:font-semibold"
+            >
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/"
+              className="hover:underline data-[status='active']:font-semibold"
+            >
+              Invoices
+            </Link>
+          </li>
+          <li>
+            <button
+              type="button"
+              className="hover:underline"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </li>
+        </ul>
+        <hr />
+        <Outlet />
+      </div>
+    </SideBarProvider>
   );
 }
