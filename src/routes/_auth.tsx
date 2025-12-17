@@ -1,12 +1,5 @@
 import SideBarProvider from "@/providers/side-bar-provider";
-import { useAuthStore } from "@/stores/use-auth-store";
-import {
-  createFileRoute,
-  Link,
-  Outlet,
-  redirect,
-  useRouter,
-} from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context, location }) => {
@@ -23,53 +16,9 @@ export const Route = createFileRoute("/_auth")({
 });
 
 function AuthLayout() {
-  const router = useRouter();
-  const navigate = Route.useNavigate();
-  const auth = useAuthStore();
-
-  const handleLogout = () => {
-    if (window.confirm("Are you sure you want to logout?")) {
-      auth.logout().then(() => {
-        router.invalidate().finally(() => {
-          navigate({ to: "/login" });
-        });
-      });
-    }
-  };
-
   return (
     <SideBarProvider>
-      <div className="p-2 h-full">
-        <h1>Authenticated Route</h1>
-        <p>This route's content is only visible to authenticated users.</p>
-        <ul className="py-2 flex gap-2">
-          <li>
-            <Link
-              to="/"
-              className="hover:underline data-[status='active']:font-semibold"
-            >
-              Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/"
-              className="hover:underline data-[status='active']:font-semibold"
-            >
-              Invoices
-            </Link>
-          </li>
-          <li>
-            <button
-              type="button"
-              className="hover:underline"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </li>
-        </ul>
-        <hr />
+      <div className="h-full">
         <Outlet />
       </div>
     </SideBarProvider>

@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BadgeCheck,
   Bell,
@@ -25,6 +23,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useSidebar } from "@/hooks/use-sidebar";
+import { useRouter } from "@tanstack/react-router";
+import { useAuthStore } from "@/stores/use-auth-store";
+import { Route } from "@/routes/_auth";
 
 export function NavUser({
   user,
@@ -35,7 +36,19 @@ export function NavUser({
     avatar: string;
   };
 }) {
+  const router = useRouter();
+  const navigate = Route.useNavigate();
+  const auth = useAuthStore();
   const { isMobile } = useSidebar();
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      auth.logout().then(() => {
+        router.invalidate().finally(() => {
+          navigate({ to: "/login" });
+        });
+      });
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -98,7 +111,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>
