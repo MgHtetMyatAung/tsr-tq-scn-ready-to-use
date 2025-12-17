@@ -1,6 +1,5 @@
 import { ComponentExample } from "@/components/component-example";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/stores/use-auth-store";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -8,12 +7,21 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const auth = useAuthStore();
+  const router = Route.useNavigate();
   return (
     <div className="p-2">
-      <h3>Welcome Home!</h3>
+      <h3 className=" text-center text-2xl lg:text-4xl 2xl:text-6xl py-10 font-medium">
+        TS Stack
+      </h3>
+      <div className=" flex justify-center">
+        <Button
+          className=" cursor-pointer"
+          onClick={() => router({ to: "/dashboard" })}
+        >
+          Dashboard
+        </Button>
+      </div>
       <ComponentExample />
-      <Button onClick={() => auth.login("htet")}>Login</Button>
     </div>
   );
 }
