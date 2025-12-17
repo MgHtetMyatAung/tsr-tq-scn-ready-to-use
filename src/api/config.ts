@@ -2,13 +2,12 @@ import { useAuthStore } from "@/stores/use-auth-store";
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { handleFailedRefresh, performTokenRefresh } from "./service";
 
-// 1. Create the Base Axios Instance
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "https://api.yourdomain.com/v1",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // Important if using secure cookies
+  // withCredentials: true, // Important if using secure cookies
 });
 
 // A flag to prevent multiple refresh attempts simultaneously

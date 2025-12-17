@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authAPI } from "..";
 import type { RegisterRequest } from "../type";
-import { useAuthStore } from "@/stores/use-auth-store";
 import { toast } from "sonner";
+import { Route } from "@/routes/register";
 
 export const useRegisterMutation = () => {
-  const { setToken } = useAuthStore();
   const queryClient = useQueryClient();
+  const route = Route.useNavigate();
   return useMutation({
     mutationFn: (payload: RegisterRequest) => authAPI.register(payload),
-    onSuccess: (data) => {
-      setToken(data.accessToken);
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: [""] });
-      toast.success("");
+      toast.success("Register success !");
+      await route({ to: "/login" });
     },
     onError: (error) => {
       console.log(error.message);

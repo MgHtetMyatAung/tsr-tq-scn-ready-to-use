@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_auth/dashboard")({
 
 function RouteComponent() {
   return (
-    <div>
+    <div className="@container/main">
       <DataTable data={data} />
     </div>
   );

@@ -16,22 +16,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Link, useRouterState } from "@tanstack/react-router";
 import React from "react";
-import type { AuthPayload } from "./type";
 import { useForm } from "react-hook-form";
-import { useLoginMutation } from "@/api/auth/mutations/use-login-mutation";
+import type { AuthPayload } from "./type";
+import { useRegisterMutation } from "@/api/auth/mutations/use-register-mutation";
 
-export function LoginForm({
+export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const isLoading = useRouterState({ select: (s) => s.isLoading });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const { mutate } = useLoginMutation();
-  const { register, handleSubmit } = useForm<Omit<AuthPayload, "name">>();
-  const onFormSubmit = async (data: Omit<AuthPayload, "name">) => {
+  const { mutate } = useRegisterMutation();
+  const { register, handleSubmit } = useForm<AuthPayload>();
+  const onFormSubmit = async (data: AuthPayload) => {
     setIsSubmitting(true);
     try {
+      //   await auth.login(username);
       await mutate(data);
+      //   await router.invalidate();
     } catch (error) {
       console.error("Error logging in: ", error);
     } finally {
@@ -43,20 +45,30 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>Login to your account</CardDescription>
+          <CardTitle className="text-xl">Welcome</CardTitle>
+          <CardDescription>Create your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onFormSubmit)}>
             <FieldGroup>
               <Field>
+                <FieldLabel htmlFor="name">Name</FieldLabel>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Your name"
+                  required
+                  {...register("name", { required: "Name is required !" })}
+                />
+              </Field>
+              <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
-                  {...register("email", { required: "Email is required !" })}
                   placeholder="m@example.com"
                   required
+                  {...register("email", { required: "Email is required !" })}
                 />
               </Field>
               <Field>
@@ -74,11 +86,10 @@ export function LoginForm({
               </Field>
               <Field>
                 <Button type="submit" disabled={isLoggingIn}>
-                  Login
+                  Sign Up
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account?{" "}
-                  <Link to="/register">Sign up</Link>
+                  Already have an account? <Link to="/login">Sign In</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

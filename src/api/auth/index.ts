@@ -18,7 +18,7 @@ export const authAPI = {
   },
   register: async (payload: RegisterRequest): Promise<RegisterResponse> => {
     const response = await apiClient.post<RegisterResponse>(
-      `${API_BASE_PATH}/register`,
+      `${API_BASE_PATH}/signup`,
       payload
     );
     return response.data;
